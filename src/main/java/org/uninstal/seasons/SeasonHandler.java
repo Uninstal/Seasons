@@ -14,7 +14,7 @@ public class SeasonHandler implements Listener {
     
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent e) {
-        if (!plugin.getService().getCleaner().isRunning()) {
+        if (plugin.getService().getCleaner().isRunning()) {
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "§cВыполняется очистка данных");
         }
     }
