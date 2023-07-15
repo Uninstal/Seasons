@@ -36,6 +36,13 @@
             <systemPath>${project.basedir}/libs/ApocalypseCaptures.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>clans</groupId>
+            <artifactId>Clans</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ApocalypseClans.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>worldguard</groupId>
             <artifactId>WorldGuard</artifactId>
             <version>1.12.2</version>

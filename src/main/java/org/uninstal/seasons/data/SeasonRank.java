@@ -23,4 +23,13 @@ public class SeasonRank {
     public String getDisplay() {
         return display;
     }
+
+    @Override
+    public String toString() {
+        return "SeasonRank{" +
+          "display='" + display + '\'' +
+          ", expTotal=" + expTotal +
+          ", expToNext=" + expToNext +
+          '}';
+    }
 }

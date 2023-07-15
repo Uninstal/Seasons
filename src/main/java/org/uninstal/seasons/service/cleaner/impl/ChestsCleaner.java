@@ -9,7 +9,7 @@ public class ChestsCleaner implements SeasonDataCleanable {
 
     @Override
     public boolean clean(SeasonDataCleaner cleaner) {
-        cleaner.getPlugin().getService()
+        cleaner.getPlugin().getServices()
           .getChestService().getList()
           .forEach(block -> {
               Location location = block.getLocation();

@@ -1,0 +1,10 @@
+ranks:
+  1:
+    exp: 0
+    display: "Noob"
+  2:
+    exp: 100
+    display: "Pro"
+  3:
+    exp: 1000
+    display: "God"

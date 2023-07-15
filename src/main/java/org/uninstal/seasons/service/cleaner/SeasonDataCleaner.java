@@ -41,9 +41,13 @@ public class SeasonDataCleaner {
         else running = true;
 
         // Для начала освободим сервер от игроков
+        logger.setCurrentPrefix("Cleaner > ");
+        logger.info("Enabling whitelist...");
         Bukkit.setWhitelist(true);
+        logger.info("Kicking all online players...");
         Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer("§cПроводится очистка"));
 
+        logger.info("Starting clean process...");
         // Начинаем процесс очистки
         cleanableMap.forEach((id, cleaner) -> {
             logger.setCurrentPrefix("Cleaner > " + id + " | ");
@@ -56,6 +60,8 @@ public class SeasonDataCleaner {
             }
         });
         
+        logger.setCurrentPrefix("Cleaner > ");
+        logger.info("Hooking post-cleaner script...");
         // Добавляем хук на запуск процесса пост-очистки данных
         Runtime.getRuntime().addShutdownHook(
           new Thread(() -> {
@@ -65,9 +71,8 @@ public class SeasonDataCleaner {
                   throw new RuntimeException(e);
               }
           }));
-        logger.setCurrentPrefix("Cleaner > ");
-        logger.info("Hooked post-cleaner script");
-
+        
+        logger.info("Shutdowning server...");
         // Отключаем сервер после предварительной очистки данных
         Bukkit.shutdown();
     }
