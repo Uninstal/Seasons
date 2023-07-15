@@ -1,10 +1,10 @@
-package org.uninstal.seasons.data.cleaner.impl;
+package org.uninstal.seasons.service.cleaner.impl;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
 import org.bukkit.Bukkit;
-import org.uninstal.seasons.data.cleaner.SeasonDataCleanable;
-import org.uninstal.seasons.data.cleaner.SeasonDataCleaner;
+import org.uninstal.seasons.service.cleaner.SeasonDataCleanable;
+import org.uninstal.seasons.service.cleaner.SeasonDataCleaner;
 
 import java.io.File;
 import java.util.UUID;

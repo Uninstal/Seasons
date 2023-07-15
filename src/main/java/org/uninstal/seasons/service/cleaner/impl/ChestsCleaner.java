@@ -1,15 +1,16 @@
-package org.uninstal.seasons.data.cleaner.impl;
+package org.uninstal.seasons.service.cleaner.impl;
 
 import org.bukkit.Location;
 import org.bukkit.block.Chest;
-import org.uninstal.seasons.data.cleaner.SeasonDataCleanable;
-import org.uninstal.seasons.data.cleaner.SeasonDataCleaner;
+import org.uninstal.seasons.service.cleaner.SeasonDataCleanable;
+import org.uninstal.seasons.service.cleaner.SeasonDataCleaner;
 
 public class ChestsCleaner implements SeasonDataCleanable {
 
     @Override
     public boolean clean(SeasonDataCleaner cleaner) {
-        cleaner.getPlugin().getService().getChests()
+        cleaner.getPlugin().getService()
+          .getChestService().getList()
           .forEach(block -> {
               Location location = block.getLocation();
               cleaner.getLogger().info(String.format("Clearing chest in %s %s %s...",

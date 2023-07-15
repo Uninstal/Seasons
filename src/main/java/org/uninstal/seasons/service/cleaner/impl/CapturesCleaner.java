@@ -1,10 +1,10 @@
-package org.uninstal.seasons.data.cleaner.impl;
+package org.uninstal.seasons.service.cleaner.impl;
 
 import org.bukkit.Bukkit;
 import org.uninstal.clans.points.Main;
 import org.uninstal.clans.points.data.manager.PointManager;
-import org.uninstal.seasons.data.cleaner.SeasonDataCleanable;
-import org.uninstal.seasons.data.cleaner.SeasonDataCleaner;
+import org.uninstal.seasons.service.cleaner.SeasonDataCleanable;
+import org.uninstal.seasons.service.cleaner.SeasonDataCleaner;
 
 public class CapturesCleaner implements SeasonDataCleanable {
     

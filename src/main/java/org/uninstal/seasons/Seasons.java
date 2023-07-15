@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.uninstal.seasons.command.SeasonCommand;
+import org.uninstal.seasons.service.SeasonService;
 
 import java.util.HashMap;
 import java.util.Map;

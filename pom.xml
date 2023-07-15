@@ -42,5 +42,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/worldguard-legacy-6.2.2-SNAPSHOT-dist.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>placeholder</groupId>
+            <artifactId>PlaceholderAPI</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/PlaceholderAPI-2.9.1 (1).jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

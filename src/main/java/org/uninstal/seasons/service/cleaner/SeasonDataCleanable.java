@@ -1,4 +1,4 @@
-package org.uninstal.seasons.data.cleaner;
+package org.uninstal.seasons.service.cleaner;
 
 public interface SeasonDataCleanable {
     // true - удачно, false - неудачно

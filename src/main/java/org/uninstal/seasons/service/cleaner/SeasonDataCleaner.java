@@ -1,9 +1,9 @@
-package org.uninstal.seasons.data.cleaner;
+package org.uninstal.seasons.service.cleaner;
 
 import org.bukkit.Bukkit;
 import org.uninstal.seasons.Seasons;
-import org.uninstal.seasons.data.cleaner.impl.CapturesCleaner;
-import org.uninstal.seasons.data.cleaner.impl.ChestsCleaner;
+import org.uninstal.seasons.service.cleaner.impl.CapturesCleaner;
+import org.uninstal.seasons.service.cleaner.impl.ChestsCleaner;
 
 import java.io.IOException;
 import java.util.HashMap;
