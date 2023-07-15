@@ -25,7 +25,7 @@ public class Seasons extends JavaPlugin {
     }
     
     private void setupEvents() {
-        Bukkit.getPluginManager().registerEvents(new SeasonsHandler(this), this);
+        Bukkit.getPluginManager().registerEvents(new SeasonHandler(this), this);
     }
     
     private void setupCommands() {
