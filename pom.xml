@@ -21,5 +21,26 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/paper-1.12.2.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>essentials</groupId>
+            <artifactId>Essentials</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/EssentialsX-2.19.7-dev+null-unknown.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>captures</groupId>
+            <artifactId>Captures</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ApocalypseCaptures.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>worldguard</groupId>
+            <artifactId>WorldGuard</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/worldguard-legacy-6.2.2-SNAPSHOT-dist.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

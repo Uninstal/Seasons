@@ -12,9 +12,12 @@ import java.util.Map;
 public class Seasons extends JavaPlugin {
     
     private final Map<String, SeasonCommand> commandMap = new HashMap<>();
+    private SeasonService service;
 
     @Override
     public void onEnable() {
+        service = new SeasonService(this);
+        
         setupEvents();
         setupCommands();
     }
@@ -23,7 +26,11 @@ public class Seasons extends JavaPlugin {
     public void onDisable() {
         
     }
-    
+
+    public SeasonService getService() {
+        return service;
+    }
+
     private void setupEvents() {
         Bukkit.getPluginManager().registerEvents(new SeasonHandler(this), this);
     }
