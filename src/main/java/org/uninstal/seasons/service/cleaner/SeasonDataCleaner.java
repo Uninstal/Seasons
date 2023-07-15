@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.uninstal.seasons.Seasons;
 import org.uninstal.seasons.service.cleaner.impl.CapturesCleaner;
 import org.uninstal.seasons.service.cleaner.impl.ChestsCleaner;
+import org.uninstal.seasons.service.cleaner.impl.ClansCleaner;
+import org.uninstal.seasons.service.cleaner.impl.LevelsCleaner;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,8 +21,7 @@ public class SeasonDataCleaner {
     public SeasonDataCleaner(Seasons plugin) {
         this.plugin = plugin;
         this.logger = new Logger(plugin);
-
-        setupCleaners();
+        this.setupCleaners();
     }
 
     private void setupCleaners() {
@@ -29,6 +30,8 @@ public class SeasonDataCleaner {
         // register("Minecraft - Worlds", MinecraftCleaner.class);
         // register("Essentials", EssentialsCleaner.class);
         register("ApocalypseCaptures", CapturesCleaner.class);
+        register("ApocalypseClans", ClansCleaner.class);
+        register("ApocalypseLevels", LevelsCleaner.class);
         register("Minecraft - Chests", ChestsCleaner.class);
     }
 

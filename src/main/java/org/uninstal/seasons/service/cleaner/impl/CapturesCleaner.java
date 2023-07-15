@@ -11,7 +11,7 @@ public class CapturesCleaner implements SeasonDataCleanable {
     @Override
     public boolean clean(SeasonDataCleaner cleaner) {
         if (!Bukkit.getPluginManager().isPluginEnabled("ApocalypseCaptures")) {
-            cleaner.getLogger().warning("Plugin is not enabled");
+            cleaner.getLogger().severe("Plugin is not enabled");
             return false;
         }
         

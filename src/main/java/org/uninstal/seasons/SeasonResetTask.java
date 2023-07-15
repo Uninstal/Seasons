@@ -1,5 +1,7 @@
 package org.uninstal.seasons;
 
+import org.bukkit.Bukkit;
+
 import java.util.Calendar;
 
 public class SeasonResetTask extends Thread {
@@ -7,11 +9,11 @@ public class SeasonResetTask extends Thread {
     private final Seasons plugin;
     private final long next;
 
-    public SeasonResetTask(Seasons plugin, long seasonStart) {
+    public SeasonResetTask(Seasons plugin, long start) {
         this.plugin = plugin;
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(seasonStart);
+        calendar.setTimeInMillis(start);
         calendar.add(Calendar.DAY_OF_YEAR, 90);
         this.next = calendar.getTimeInMillis();
     }
@@ -25,7 +27,7 @@ public class SeasonResetTask extends Thread {
         try {
             Thread.sleep(next - System.currentTimeMillis());
             plugin.getLogger().info("Season was ended, running cleaner...");
-            plugin.getServices().getCleaner().clean();
+            Bukkit.getScheduler().runTask(plugin, plugin.getServices().getCleaner()::clean);
         } catch (InterruptedException e) {
             plugin.getLogger().info("Reset task was interrupted");
         }

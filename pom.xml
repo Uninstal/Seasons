@@ -56,5 +56,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/PlaceholderAPI-2.9.1 (1).jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>levels</groupId>
+            <artifactId>Levels</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ApocalypseLevels.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
