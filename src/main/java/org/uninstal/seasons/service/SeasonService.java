@@ -13,8 +13,8 @@ public class SeasonService {
     public SeasonService(Seasons plugin) {
         this.plugin = plugin;
         this.cleaner = new SeasonDataCleaner(plugin);
-        this.rankService = new SeasonRankService();
-        this.chestService = new SeasonChestService();
+        this.rankService = new SeasonRankService(plugin);
+        this.chestService = new SeasonChestService(plugin);
     }
 
     public SeasonChestService getChestService() {

@@ -1,5 +1,6 @@
 package org.uninstal.seasons.service;
 
+import org.uninstal.seasons.Seasons;
 import org.uninstal.seasons.data.SeasonRank;
 
 import java.util.ArrayList;
@@ -8,8 +9,17 @@ import java.util.Optional;
 
 public class SeasonRankService {
     
+    private final Seasons plugin;
     private final List<SeasonRank> ranks = new ArrayList<>();
-    
+
+    public SeasonRankService(Seasons plugin) {
+        this.plugin = plugin;
+    }
+
+    public Seasons getPlugin() {
+        return plugin;
+    }
+
     public void add(SeasonRank rank) {
         this.ranks.add(rank);
     }
