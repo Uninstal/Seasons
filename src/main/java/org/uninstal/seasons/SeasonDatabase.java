@@ -1,8 +1,11 @@
 package org.uninstal.seasons;
 
+import org.apache.commons.lang.Validate;
 import org.uninstal.seasons.data.SeasonUser;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,14 +72,14 @@ public class SeasonDatabase {
     protected void init() {
         execute(connection -> {
             try (Statement statement = connection.createStatement()) {
-                statement.executeUpdate("CREATE TABLE IF NOT EXISTS apocalypseseasons");
-//                  "id INT NOT NULL AUTO_INCREMENT, " +
-//                  "owner VARCHAR(30) NOT NULL, " +
-//                  "item BLOB NOT NULL, " +
-//                  "price DOUBLE NOT NULL, " +
-//                  "state TINYINT UNSIGNED NOT NULL, " +
-//                  "date BIGINT UNSIGNED NOT NULL, " +
-//                  "PRIMARY KEY (id))");
+                statement.executeUpdate(
+                  "CREATE TABLE IF NOT EXISTS apocalypseseasons (" +
+                    "user_name TEXT NOT NULL, " +
+                    "exp INT NOT NULL, " +
+                    "mob_kills INT NOT NULL, " +
+                    "player_kills INT NOT NULL, " +
+                    "play_time LONG NOT NULL)"
+                );
                 statement.executeUpdate("ALTER TABLE apocalypseseasons CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -89,7 +92,7 @@ public class SeasonDatabase {
             try (PreparedStatement statement = connection.prepareStatement("")) {
                 statement.setString(1, userName);
                 ResultSet resultSet = statement.executeQuery();
-                return wrapUser(userName, 
+                return wrapUser(userName,
                   resultSet.getInt(1),
                   resultSet.getInt(2),
                   resultSet.getInt(3),
@@ -99,7 +102,7 @@ public class SeasonDatabase {
             }
         });
     }
-    
+
     public CompletableFuture<SeasonUser> saveUser(SeasonUser user) {
         return executeAsync(connection -> {
             try (PreparedStatement statement = connection.prepareStatement("")) {
@@ -115,8 +118,75 @@ public class SeasonDatabase {
             }
         });
     }
-    
+
+    public CompletableFuture<BestPlayersList> getBestPlayers(TargetParameter parameter, int quantity) {
+        Validate.notNull(parameter, "Target parameter cannot be null");
+        Validate.isTrue(quantity > 0, "Quantity cannot be less than 0");
+        return executeAsync(connection -> {
+            try (PreparedStatement statement = connection.prepareStatement("")) {
+                statement.setString(1, parameter.getColumnId());
+                ResultSet resultSet = statement.executeQuery();
+                List<SeasonUser> users = new ArrayList<>();
+                while (resultSet.next()) {
+                    users.add(
+                      wrapUser(
+                        resultSet.getString(1),
+                        resultSet.getInt(2),
+                        resultSet.getInt(3),
+                        resultSet.getInt(4),
+                        resultSet.getInt(5)
+                      )
+                    );
+                }
+                return new BestPlayersList(parameter, users);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
     private SeasonUser wrapUser(String userName, int exp, int mobKills, int playerKills, int playTime) {
         return new SeasonUser(plugin.getServices(), userName, exp, mobKills, playerKills, playTime);
+    }
+
+    public enum TargetParameter {
+        PLAY_TIME("play_time", "play-time"),
+        MOB_KILLS("mob_kills", "mob-kills"),
+        PLAYER_KILLS("player_kills", "player-kills");
+
+        private final String columnId;
+        private final String configId;
+
+        TargetParameter(String columnId, String configId) {
+            this.columnId = columnId;
+            this.configId = configId;
+        }
+
+        public String getColumnId() {
+            return columnId;
+        }
+
+        public String getConfigId() {
+            return configId;
+        }
+    }
+    
+    public static class BestPlayersList {
+        
+        private final TargetParameter parameter;
+        private final List<SeasonUser> users;
+
+        public BestPlayersList(TargetParameter parameter, List<SeasonUser> users) {
+            this.parameter = parameter;
+            this.users = users;
+        }
+
+        public TargetParameter getParameter() {
+            return parameter;
+        }
+
+        public List<SeasonUser> getUsers() {
+            return users;
+        }
     }
 }

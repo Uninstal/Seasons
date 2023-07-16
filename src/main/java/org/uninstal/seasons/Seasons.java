@@ -7,6 +7,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.uninstal.seasons.command.SeasonCommand;
 import org.uninstal.seasons.data.SeasonRank;
+import org.uninstal.seasons.integration.Placeholder;
 import org.uninstal.seasons.service.SeasonServices;
 
 import java.util.HashMap;
@@ -34,6 +35,8 @@ public class Seasons extends JavaPlugin {
 
         setupEvents();
         setupCommands();
+        
+        new Placeholder(this).register();
     }
 
     @Override

@@ -1,10 +1,51 @@
+# Ранги игроков, которые формируются в зависимости
+# от количества опыта, выдаваемого в конце сезона
 ranks:
-  1:
-    exp: 0
-    display: "Noob"
+  1: # Уровень
+    exp: 0 # Необходимый опыт (на 1 уровне должен быть = 0)
+    display: "Noob" # Отображаемое имя ранга
   2:
     exp: 100
     display: "Pro"
   3:
     exp: 1000
     display: "God"
+# Награды, выдаваемые игрокам в конце сезона
+rewards:
+  mobs-kills: # Топ по убийству мобов
+    quantity: 3 # Количество мест в топе
+    discord:
+      header: 'Самый кровавый убийца монстров:'
+      element: '<place> - <player>'
+    places:
+      1: # Место в топе
+        - '' # Команда от имени администратора
+        - 'eco give <player> 1000'
+      2:
+        - 'eco give <player> 100'
+      3:
+        - 'eco give <player> 100'
+  player-kills: # Топ по убийству игроков
+    quantity: 3 # Количество мест в топе
+    discord:
+      header: 'Самый кровавый убийца игроков:'
+      element: '<place> - <player>'
+    places:
+      1:
+        - 'eco give <player> 1000'
+      2:
+        - 'eco give <player> 100'
+      3:
+        - 'eco give <player> 100'
+  play-time: # Топ по наигранному времени
+    quantity: 3
+    discord:
+      header: 'Топ игроков по наигранному времени:'
+      element: '<place> - <player>'
+    places:
+      1:
+        - 'eco give <player> 1000'
+      2:
+        - 'eco give <player> 100'
+      3:
+        - 'eco give <player> 100'
