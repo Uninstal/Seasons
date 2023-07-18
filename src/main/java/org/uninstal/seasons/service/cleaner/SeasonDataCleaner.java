@@ -36,10 +36,6 @@ public class SeasonDataCleaner {
     }
 
     private void setupCleaners() {
-        // Возможно, будет перенесено в отдельный скрипт.
-        // Нужны тесты.
-        // register("Minecraft - Worlds", MinecraftCleaner.class);
-        // register("Essentials", EssentialsCleaner.class);
         register("ApocalypseCaptures", CapturesCleaner.class);
         register("ApocalypseClans", ClansCleaner.class);
         register("ApocalypseLevels", LevelsCleaner.class);
