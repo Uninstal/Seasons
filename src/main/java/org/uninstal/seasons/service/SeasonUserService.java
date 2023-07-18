@@ -20,20 +20,22 @@ public class SeasonUserService {
     public Seasons getPlugin() {
         return plugin;
     }
-    
+
     public void load(Player player) {
-        loadings.put(player,
+        loadings.putIfAbsent(player,
           plugin.getDatabase().getUser(player.getName())
             .thenApply(user -> {
                 loadings.remove(player);
                 if (player.isOnline()) {
-                    cached.put(player, user);
+                    cached.put(player, user == null
+                      ? new SeasonUser(plugin.getServices(), player.getName(), 0)
+                      : user);
                 }
                 return player;
             })
         );
     }
-    
+
     public void unload(Player player) {
         if (cached.containsKey(player)) {
             plugin.getDatabase().saveUser(cached.remove(player));

@@ -1,0 +1,6 @@
+name: ApocalypseSeasons
+main: org.uninstal.seasons.Seasons
+version: 1.0
+commands: 
+  season:
+    description: Main command.

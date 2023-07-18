@@ -6,33 +6,43 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.uninstal.seasons.command.SeasonCommand;
-import org.uninstal.seasons.data.SeasonRank;
 import org.uninstal.seasons.integration.Placeholder;
 import org.uninstal.seasons.service.SeasonServices;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Seasons extends JavaPlugin {
 
     private final Map<String, SeasonCommand> commandMap = new HashMap<>();
+    
     private SeasonDatabase database;
-    private SeasonServices service;
+    private SeasonServices services;
     private SeasonResetTask task;
 
     @Override
     public void onEnable() {
-        // Все данные будут в бущущем загружаться из конфига
-        database = new SeasonDatabase(this, null, null, null, null);
-        service = new SeasonServices(this);
-        Bukkit.getServicesManager().register(SeasonServices.class, service, this, ServicePriority.Normal);
         
-        task = new SeasonResetTask(this, 0L);
-        task.start();
+        // Подгрузка конфига
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
+        SeasonConfig.setConfig(getConfig());
+        
+        try {
+            // Все данные будут в бущущем загружаться из конфига
+            database = new SeasonDatabase(this,
+              getConfig().getString("database.host"),
+              getConfig().getString("database.base"),
+              getConfig().getString("database.user"),
+              getConfig().getString("database.password")
+            );
+            database.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
-        loadRanks();
-
+        setupSevices();
         setupEvents();
         setupCommands();
         
@@ -41,11 +51,11 @@ public class Seasons extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        
     }
 
     public SeasonServices getServices() {
-        return service;
+        return services;
     }
 
     public SeasonDatabase getDatabase() {
@@ -55,40 +65,14 @@ public class Seasons extends JavaPlugin {
     public SeasonResetTask getTask() {
         return task;
     }
-
-    private void loadRanks() {
-        String previousId = null;
-        Iterator<String> ranks = getConfig()
-          .getConfigurationSection("ranks")
-          .getKeys(false).iterator();
+    
+    private void setupSevices() {
+        services = new SeasonServices(this);
+        services.initialize();
+        task = new SeasonResetTask(this, 0L);
+        task.start();
         
-        while (ranks.hasNext()) {
-            String currentId = ranks.next();
-            
-            if (previousId == null) {
-                if (!ranks.hasNext()) {
-                    String display = getConfig().getString("ranks." + currentId + ".display");
-                    int expTotal = getConfig().getInt("ranks." + currentId + ".exp");
-                    service.getRankService().add(new SeasonRank(display, expTotal, Integer.MAX_VALUE));
-                    return;
-                }
-                
-                previousId = currentId;
-                continue;
-            }
-
-            String display = getConfig().getString("ranks." + previousId + ".display");
-            int expTotal = getConfig().getInt("ranks." + previousId + ".exp");
-            int expTotalNext = getConfig().getInt("ranks." + currentId + ".exp");
-            service.getRankService().add(new SeasonRank(display, expTotal, expTotalNext));
-            
-            if (!ranks.hasNext()) {
-                display = getConfig().getString("ranks." + currentId + ".display");
-                service.getRankService().add(new SeasonRank(display, expTotalNext, Integer.MAX_VALUE));
-            }
-            
-            previousId = currentId;
-        }
+        Bukkit.getServicesManager().register(SeasonServices.class, services, this, ServicePriority.Normal);
     }
 
     private void setupEvents() {

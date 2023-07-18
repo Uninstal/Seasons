@@ -36,9 +36,7 @@ public class SeasonDatabase {
 
     private Connection getConnection() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://<host>/<base>?useSSL=false"
-                .replace("<host>", host).replace("<base>", base),
-              user, password);
+            return DriverManager.getConnection("jdbc:mysql://<host>/<base>?useSSL=false".replace("<host>", host).replace("<base>", base), user, password);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -72,14 +70,12 @@ public class SeasonDatabase {
     protected void init() {
         execute(connection -> {
             try (Statement statement = connection.createStatement()) {
-                statement.executeUpdate(
-                  "CREATE TABLE IF NOT EXISTS apocalypseseasons (" +
-                    "user_name TEXT NOT NULL, " +
-                    "exp INT NOT NULL, " +
-                    "mob_kills INT NOT NULL, " +
-                    "player_kills INT NOT NULL, " +
-                    "play_time LONG NOT NULL)"
-                );
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS apocalypseseasons (" 
+                  + "user_name TEXT NOT NULL, " 
+                  + "exp INT NOT NULL, " 
+                  + "mob_kills INT NOT NULL, " 
+                  + "player_kills INT NOT NULL, " 
+                  + "play_time LONG NOT NULL)");
                 statement.executeUpdate("ALTER TABLE apocalypseseasons CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -89,10 +85,10 @@ public class SeasonDatabase {
 
     public CompletableFuture<SeasonUser> getUser(String userName) {
         return executeAsync(connection -> {
-            try (PreparedStatement statement = connection.prepareStatement("")) {
+            try (PreparedStatement statement = connection.prepareStatement("SELECT exp, mobs_kills, player_kills, play_time FROM apocalypseseasons WHETE user_name=?")) {
                 statement.setString(1, userName);
                 ResultSet resultSet = statement.executeQuery();
-                return wrapUser(userName,
+                return !resultSet.next() ? null : wrapUser(userName,
                   resultSet.getInt(1),
                   resultSet.getInt(2),
                   resultSet.getInt(3),
@@ -128,15 +124,7 @@ public class SeasonDatabase {
                 ResultSet resultSet = statement.executeQuery();
                 List<SeasonUser> users = new ArrayList<>();
                 while (resultSet.next()) {
-                    users.add(
-                      wrapUser(
-                        resultSet.getString(1),
-                        resultSet.getInt(2),
-                        resultSet.getInt(3),
-                        resultSet.getInt(4),
-                        resultSet.getInt(5)
-                      )
-                    );
+                    users.add(wrapUser(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4), resultSet.getInt(5)));
                 }
                 return new BestPlayersList(parameter, users);
             } catch (SQLException e) {
@@ -150,9 +138,7 @@ public class SeasonDatabase {
     }
 
     public enum TargetParameter {
-        PLAY_TIME("play_time", "play-time"),
-        MOB_KILLS("mob_kills", "mob-kills"),
-        PLAYER_KILLS("player_kills", "player-kills");
+        PLAY_TIME("play_time", "play-time"), MOB_KILLS("mob_kills", "mob-kills"), PLAYER_KILLS("player_kills", "player-kills");
 
         private final String columnId;
         private final String configId;
@@ -170,9 +156,9 @@ public class SeasonDatabase {
             return configId;
         }
     }
-    
+
     public static class BestPlayersList {
-        
+
         private final TargetParameter parameter;
         private final List<SeasonUser> users;
 

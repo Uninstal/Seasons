@@ -38,4 +38,13 @@ public class SeasonServices {
     public Seasons getPlugin() {
         return plugin;
     }
+    
+    public void initialize() {
+        rankService.initialize();
+        chestService.initialize();
+    }
+    
+    public void close() {
+        chestService.close();
+    }
 }
