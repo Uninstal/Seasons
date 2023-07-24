@@ -124,7 +124,7 @@ public class SeasonDataCleaner {
         List<Clan> clans = Manager.getClans();
         clans.sort(Comparator.comparingInt(Clan::getRating));
         StringBuilder builder = new StringBuilder();
-        builder.append(SeasonConfig.getDiscordHeader(UserParameter.CLAN));
+        builder.append(SeasonConfig.getDiscordHeader(UserParameter.CLAN)).append("\n");
         int limit = Math.min(clans.size(), SeasonConfig.getRewardsQuantity(UserParameter.CLAN));
 
         for (int i = 0; i < limit; i++) {
