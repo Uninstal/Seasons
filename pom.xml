@@ -6,6 +6,7 @@
 
     <groupId>org.uninstal.seasons</groupId>
     <artifactId>ApocalypseSeasons</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
 
     <properties>
@@ -62,6 +63,34 @@
             <version>1.12.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/ApocalypseLevels.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>structures</groupId>
+            <artifactId>Structures</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ApocalypseStructures.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>auction</groupId>
+            <artifactId>Auction</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ApocalypseAuction.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>friends</groupId>
+            <artifactId>Friends</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ApocalypseFriends.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>discord</groupId>
+            <artifactId>Discord</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ApocalypseDiscordBot.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

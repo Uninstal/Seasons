@@ -60,14 +60,15 @@ public class SeasonChestService {
         }
     }
 
-    void close() {
+    void save() {
         try {
             File chestsFile = new File(plugin.getDataFolder(), "chests.txt");
             try (BufferedWriter writer = Files.newBufferedWriter(chestsFile.toPath(),
               StandardOpenOption.TRUNCATE_EXISTING)) {
                 int count = 0;
-                for (Block block = chests.get(count); count < chests.size(); count++) {
+                for (Block block : chests) {
                     writer.write(locationToString(block.getLocation()));
+                    count++;
                 }
                 plugin.getLogger().info(String.format("Saved %s chest locations to file", count));
             }

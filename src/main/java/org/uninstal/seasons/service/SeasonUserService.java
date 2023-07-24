@@ -1,17 +1,17 @@
 package org.uninstal.seasons.service;
 
-import org.bukkit.entity.Player;
 import org.uninstal.seasons.Seasons;
 import org.uninstal.seasons.data.SeasonUser;
 
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class SeasonUserService {
 
     private final Seasons plugin;
-    private final Map<Player, CompletableFuture<Player>> loadings = new HashMap<>();
-    private final Map<Player, SeasonUser> cached = new HashMap<>();
+    private final Map<String, SeasonUser> cached = new HashMap<>();
 
     public SeasonUserService(Seasons plugin) {
         this.plugin = plugin;
@@ -21,32 +21,32 @@ public class SeasonUserService {
         return plugin;
     }
 
-    public void load(Player player) {
-        loadings.putIfAbsent(player,
-          plugin.getDatabase().getUser(player.getName())
-            .thenApply(user -> {
-                loadings.remove(player);
-                if (player.isOnline()) {
-                    cached.put(player, user == null
-                      ? new SeasonUser(plugin.getServices(), player.getName(), 0)
-                      : user);
-                }
-                return player;
-            })
-        );
+    public void load(String player) {
+        plugin.getDatabase().getUser(player)
+          .thenAccept(user ->
+            cached.put(player, user == null
+              ? new SeasonUser(plugin.getServices(), player)
+              : user)
+          );
     }
 
-    public void unload(Player player) {
+    public void unload(String player) {
         if (cached.containsKey(player)) {
-            plugin.getDatabase().saveUser(cached.remove(player));
+            plugin.getDatabase().saveUser(cached.remove(player), true);
         }
     }
 
-    public Optional<SeasonUser> get(Player player) {
+    public Optional<SeasonUser> get(String player) {
         return Optional.ofNullable(this.cached.get(player));
     }
 
     public Collection<SeasonUser> getList() {
         return cached.values();
+    }
+    
+    public void close() {
+        for (SeasonUser user : cached.values()) {
+            plugin.getDatabase().saveUser(cached.remove(user.getUserName()), false);
+        }
     }
 }

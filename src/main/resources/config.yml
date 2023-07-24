@@ -1,9 +1,31 @@
+# Настройки очистки
+cleaner: 
+  # Путь до скрипта
+  script: 'C:\\Users\\Uninstal\\Desktop\\Servers\\Cleaner\\Cleaner.jar'
+  # Команда вызова скрипта
+  command: 'cmd /c start java -jar <path>'
+  # Регионы для очистки
+  regions:
+    - 'test'
+    - 'test2'
 # База данных MySQL
 database:
   host: '127.0.0.1'
   user: 'root' 
   password: '12345'
   base: 'test'
+# Топы игроков
+# Плейсхолдеры:
+# %seasons_rating_mobs_<место>_name% - ник игрока на таком-то месте по убийствам мобов
+# %seasons_rating_players_<место>_name% - ник игрока на таком-то месте по убийствам игроков
+# %seasons_rating_time_<место>_name% - ник игрока на таком-то месте по наигранному времени
+# Вместо name можно писать value, тогда будет выводится значение соответствующего параметра
+rating-cache:
+  # Данные кэшируются и обновляются периодически
+  # Здесь указывается период обновления в секундах
+  update: 3600
+  # Количество кэшируемых мест в топе
+  quantity: 10
 # Ранги игроков, которые формируются в зависимости
 # от количества опыта, выдаваемого в конце сезона
 ranks:
@@ -17,22 +39,37 @@ ranks:
     exp: 1000
     display: "God"
 # Награды, выдаваемые игрокам в конце сезона
+# Список дисциплин: clans, mob-kills, player-kills, play-time
 rewards:
-  mobs-kills: # Топ по убийству мобов
-    quantity: 3 # Количество мест в топе
+  clan: # Топ по группировкам
+    quantity: 3
+    discord:
+      header: 'Топ группировок:'
+      element: '<place> - <clan>'
+    # Команды, применяемые в зависимости от места в топе
+    # Для группировок команды применяются каждому участнику
+    # вне зависимости от ранга в ней
+    places:
+      1: # Место в топе
+        - 'eco give <player> 1000'
+      2:
+        - 'eco give <player> 100'
+      3:
+        - 'eco give <player> 100'
+  mob-kills: # Топ по убийству мобов
+    quantity: 3
     discord:
       header: 'Самый кровавый убийца монстров:'
       element: '<place> - <player>'
     places:
-      1: # Место в топе
-        - '' # Команда от имени администратора
+      1:
         - 'eco give <player> 1000'
       2:
         - 'eco give <player> 100'
       3:
         - 'eco give <player> 100'
   player-kills: # Топ по убийству игроков
-    quantity: 3 # Количество мест в топе
+    quantity: 3
     discord:
       header: 'Самый кровавый убийца игроков:'
       element: '<place> - <player>'

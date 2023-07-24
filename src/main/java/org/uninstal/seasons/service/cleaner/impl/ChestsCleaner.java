@@ -18,6 +18,6 @@ public class ChestsCleaner implements SeasonDataCleanable {
               Chest chest = (Chest) block.getState();
               chest.getInventory().clear();
           });
-        return false;
+        return true;
     }
 }

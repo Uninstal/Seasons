@@ -45,6 +45,7 @@ public class SeasonServices {
     }
     
     public void close() {
-        chestService.close();
+        chestService.save();
+        userService.close();
     }
 }

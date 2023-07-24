@@ -1,25 +1,31 @@
 package org.uninstal.seasons;
 
 import org.bukkit.Bukkit;
+import org.uninstal.seasons.data.Season;
 
 import java.util.Calendar;
 
 public class SeasonResetTask extends Thread {
-    
+
     private final Seasons plugin;
+    private final Season season;
     private final long next;
 
-    public SeasonResetTask(Seasons plugin, long start) {
+    public SeasonResetTask(Seasons plugin, Season season) {
         this.plugin = plugin;
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(start);
-        calendar.add(Calendar.DAY_OF_YEAR, 90);
-        this.next = calendar.getTimeInMillis();
+        this.season = season;
+        this.next = season.getEnd().getTimeInMillis();
+        this.plugin.getLogger().info(String.format("Next cleaner start after %s days",
+          season.getEnd().get(Calendar.DAY_OF_YEAR) - Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+        ));
     }
 
     public Seasons getPlugin() {
         return plugin;
+    }
+
+    public Season getSeason() {
+        return season;
     }
 
     @Override
