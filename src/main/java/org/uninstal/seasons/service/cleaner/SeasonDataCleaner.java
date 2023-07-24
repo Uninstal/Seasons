@@ -131,8 +131,9 @@ public class SeasonDataCleaner {
             Clan clan = clans.get(i);
             builder.append(
               SeasonConfig.getDiscordElement(UserParameter.CLAN)
-              .replace("<place>", String.valueOf(i + 1))
-              .replace("<clan>", clan.getName())
+                .replace("<place>", String.valueOf(i + 1))
+                .replace("<value>", String.valueOf(clan.getRating()))
+                .replace("<clan>", clan.getName())
             );
             if (i + 1 != limit) {
                 builder.append("\n");
@@ -155,6 +156,7 @@ public class SeasonDataCleaner {
         // Начинаем процесс очистки
         cleanableMap.forEach((id, cleaner) -> {
             logger.setCurrentPrefix("Cleaner > " + id + " | ");
+            logger.info("Run...");
 
             try {
                 SeasonDataCleanable cleanable = cleaner.newInstance();

@@ -19,6 +19,7 @@ public class MinepacksCleaner implements SeasonDataCleanable {
         SeasonDatabase database = cleaner.getPlugin().getDatabase();
         cleaner.getLogger().info("Dropping tables in SQL (sync)...");
         database.execute("DROP TABLE backpacks", PreparedStatement::executeUpdate);
+        database.execute("DROP TABLE backpack_cooldowns", PreparedStatement::executeUpdate);
         database.execute("DROP TABLE backpack_players", PreparedStatement::executeUpdate);
         return true;
     }
