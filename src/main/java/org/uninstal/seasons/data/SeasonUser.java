@@ -81,6 +81,12 @@ public class SeasonUser {
     public long getPlayTime() {
         return playTime;
     }
+    
+    public long getPlayTimeReal() {
+        return getPlayer() != null
+          ? playTime + (System.currentTimeMillis() - join)
+          : playTime;
+    }
 
     public void setPlayTime(long playTime) {
         this.playTime = playTime;

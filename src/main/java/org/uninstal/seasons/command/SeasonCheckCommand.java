@@ -3,6 +3,7 @@ package org.uninstal.seasons.command;
 import org.bukkit.command.CommandSender;
 import org.uninstal.seasons.Seasons;
 import org.uninstal.seasons.data.SeasonUser;
+import org.uninstal.seasons.util.TimeFormat;
 
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class SeasonCheckCommand extends SeasonCommand {
         String message = "§7[§6Сезоны§7] §a%s:\n" +
           "§7[§6Сезоны§7] Ранг: %s\n" +
           "§7[§6Сезоны§7] Прогресс: §e%s§7/§e%s\n" +
-          "§7[§6Сезоны§7] Наигранное время: ...\n" +
+          "§7[§6Сезоны§7] Наигранное время: §e%s\n" +
           "§7[§6Сезоны§7] Убитые монстры: §e%s\n" +
           "§7[§6Сезоны§7] Убитые игроки: §e%s\n";
 
@@ -45,6 +46,7 @@ public class SeasonCheckCommand extends SeasonCommand {
           user.getRank().getDisplay(),
           user.getExp(),
           user.getRank().getExpToNext(),
+          TimeFormat.toShort(user.getPlayTimeReal()),
           user.getMobKills(),
           user.getPlayerKills())
         );

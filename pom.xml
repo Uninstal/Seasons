@@ -92,5 +92,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/ApocalypseDiscordBot.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>areashop</groupId>
+            <artifactId>AreaShop</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/AreaShop.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

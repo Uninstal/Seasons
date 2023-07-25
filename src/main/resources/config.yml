@@ -49,13 +49,17 @@ rewards:
     # Команды, применяемые в зависимости от места в топе
     # Для группировок команды применяются каждому участнику
     # вне зависимости от ранга в ней
+    # Чтобы выдать сезонный опыт, нужно писать 'exp <значение>'
     places:
       1: # Место в топе
         - 'eco give <player> 1000'
+        - 'exp 50'
       2:
         - 'eco give <player> 100'
+        - 'exp 40'
       3:
         - 'eco give <player> 100'
+        - 'exp 30'
   mob-kills: # Топ по убийству мобов
     quantity: 3
     discord:
@@ -64,10 +68,13 @@ rewards:
     places:
       1:
         - 'eco give <player> 1000'
+        - 'exp 50'
       2:
         - 'eco give <player> 100'
+        - 'exp 40'
       3:
         - 'eco give <player> 100'
+        - 'exp 30'
   player-kills: # Топ по убийству игроков
     quantity: 3
     discord:
@@ -76,10 +83,13 @@ rewards:
     places:
       1:
         - 'eco give <player> 1000'
+        - 'exp 50'
       2:
         - 'eco give <player> 100'
+        - 'exp 40'
       3:
         - 'eco give <player> 100'
+        - 'exp 30'
   play-time: # Топ по наигранному времени
     quantity: 3
     discord:
@@ -88,7 +98,10 @@ rewards:
     places:
       1:
         - 'eco give <player> 1000'
+        - 'exp 50'
       2:
         - 'eco give <player> 100'
+        - 'exp 40'
       3:
         - 'eco give <player> 100'
+        - 'exp 30'

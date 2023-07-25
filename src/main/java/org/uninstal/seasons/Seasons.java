@@ -1,5 +1,6 @@
 package org.uninstal.seasons;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +16,9 @@ import org.uninstal.seasons.service.SeasonServices;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Seasons extends JavaPlugin {
 
@@ -108,6 +111,7 @@ public class Seasons extends JavaPlugin {
         commandMap.put("check", new SeasonCheckCommand(this));
         commandMap.put("update", new SeasonUpdateCommand(this));
         commandMap.put("clean", new SeasonCleanCommand(this));
+        commandMap.put("ranks", new SeasonRanksCommand(this));
     }
 
     @Override
@@ -132,11 +136,24 @@ public class Seasons extends JavaPlugin {
         return false;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (sender.isOp() && args.length == 1) {
+            return Lists.newArrayList("add", "set", "check", "update", "clean", "ranks")
+              .stream().filter(arg -> args[0].startsWith(arg))
+              .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
     private void sendHelpMessage(CommandSender sender) {
         sender.sendMessage("§7[§6Сезоны§7] /season add exp|mobs|players <ник> <значение>");
+        sender.sendMessage("§7[§6Сезоны§7] /season add chest");
         sender.sendMessage("§7[§6Сезоны§7] /season set exp|mobs|players <ник> <значение>");
         sender.sendMessage("§7[§6Сезоны§7] /season check <ник>");
         sender.sendMessage("§7[§6Сезоны§7] /season update");
+        sender.sendMessage("§7[§6Сезоны§7] /season ranks");
         sender.sendMessage("§7[§6Сезоны§7] /season clean §8(CONSOLE)");
     }
 }

@@ -8,7 +8,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -79,7 +78,7 @@ public class SeasonDatabase {
                   + "exp INT NOT NULL, "
                   + "mob_kills INT NOT NULL, "
                   + "player_kills INT NOT NULL, "
-                  + "play_time LONG NOT NULL)");
+                  + "play_time BIGINT NOT NULL)");
                 statement.executeUpdate("ALTER TABLE apocalypseseasons CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -142,15 +141,39 @@ public class SeasonDatabase {
           });
     }
 
-    public void dropTable() {
-        execute("DROP TABLE apocalypseseasons", PreparedStatement::executeUpdate);
+    public CompletableFuture<List<SeasonUser>> getRankedPlayers() {
+        return executeAsync("SELECT * FROM apocalypseseasons WHERE exp>0 ORDER BY exp DESC",
+          statement -> {
+              List<SeasonUser> users = new ArrayList<>();
+              ResultSet result = statement.executeQuery();
+              while (result.next()) {
+                  users.add(
+                    wrapUser(result.getString(1),
+                      result.getInt(2), result.getInt(3),
+                      result.getInt(4), result.getLong(5)
+                    )
+                  );
+              }
+              return users;
+          });
+    }
+
+    public void clear() {
+        execute(connection -> {
+            try (Statement statement = connection.createStatement()) {
+                statement.executeUpdate("DELETE FROM apocalypseseasons WHERE exp=0");
+                statement.executeUpdate("UPDATE apocalypseseasons SET mob_kills=0, player_kills=0, play_time=0");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public BestPlayersHolder getBestPlayersHolder() {
         return holder;
     }
 
-    public <V> CompletionStage<Integer> updateUser(String userName, UserParameter parameter, V value) {
+    public <V> CompletableFuture<Integer> updateUser(String userName, UserParameter parameter, V value) {
         Validate.notNull(userName, "Username cannot be null");
         Validate.notNull(parameter, "Parameter cannot be null");
         Validate.notNull(value, "Value cannot be null");

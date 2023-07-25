@@ -68,6 +68,7 @@ public class SeasonChestService {
                 int count = 0;
                 for (Block block : chests) {
                     writer.write(locationToString(block.getLocation()));
+                    writer.write(System.lineSeparator());
                     count++;
                 }
                 plugin.getLogger().info(String.format("Saved %s chest locations to file", count));

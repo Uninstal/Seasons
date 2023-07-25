@@ -15,8 +15,7 @@ public class StructuresCleaner implements SeasonDataCleanable {
             return false;
         }
         
-        Main.getInstance().getStructures()
-          .forEach(Structure::crushWithTime);
+        Main.getInstance().getStructures().forEach(Structure::crush);
         return true;
     }
 }

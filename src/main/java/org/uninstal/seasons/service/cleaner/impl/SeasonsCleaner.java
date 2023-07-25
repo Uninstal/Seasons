@@ -7,8 +7,8 @@ public class SeasonsCleaner implements SeasonDataCleanable {
     
     @Override
     public boolean clean(SeasonDataCleaner cleaner) {
-        cleaner.getLogger().info("Dropping table in SQL (sync)...");
-        cleaner.getPlugin().getDatabase().dropTable();
+        cleaner.getLogger().info("Clearing table in SQL (sync)...");
+        cleaner.getPlugin().getDatabase().clear();
         return true;
     }
 }

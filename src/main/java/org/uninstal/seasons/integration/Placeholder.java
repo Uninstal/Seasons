@@ -71,7 +71,7 @@ public class Placeholder extends PlaceholderExpansion {
             }
         }
         if (params.equalsIgnoreCase("date_hours")) {
-            return String.valueOf(plugin.getCurrentSeason().getStart().getTimeInMillis() / 3600000L);
+            return String.valueOf((System.currentTimeMillis() - plugin.getCurrentSeason().getStart().getTimeInMillis()) / 3600000L);
         }
         if (params.equalsIgnoreCase("date_remain")) {
             long end = plugin.getCurrentSeason().getEnd().getTimeInMillis();

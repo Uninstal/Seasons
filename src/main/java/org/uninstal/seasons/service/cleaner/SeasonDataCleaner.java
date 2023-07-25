@@ -47,8 +47,8 @@ public class SeasonDataCleaner {
         register("ApocalypseStructures", StructuresCleaner.class);
         register("ApocalypseSeasons", SeasonsCleaner.class);
         register("Minecraft - Chests", ChestsCleaner.class);
-        register("WorldGuard - Regions", RegionsCleaner.class);
         register("Minepacks", MinepacksCleaner.class);
+        register("AreaShop", AreaShopCleaner.class);
     }
 
     public void register(String dataName, Class<? extends SeasonDataCleanable> cleanable) {
@@ -100,11 +100,7 @@ public class SeasonDataCleaner {
             builder.append(header).append("\n");
             for (int placeIndex = 0; placeIndex < users.size(); placeIndex++) {
                 SeasonUser target = users.get(placeIndex);
-                SeasonConfig.getRewardsCommands(parameter, placeIndex + 1)
-                  .forEach(command -> {
-                      command = command.replace("<player>", target.getUserName());
-                      Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-                  });
+                applyCommands(parameter, placeIndex + 1, target.getUserName());
 
                 builder.append(
                   element
@@ -122,13 +118,17 @@ public class SeasonDataCleaner {
 
         // Выдача наград в зависимости от места в топе группировок
         List<Clan> clans = Manager.getClans();
-        clans.sort(Comparator.comparingInt(Clan::getRating));
+        clans.sort(Comparator.comparingInt(Clan::getRating).reversed());
         StringBuilder builder = new StringBuilder();
         builder.append(SeasonConfig.getDiscordHeader(UserParameter.CLAN)).append("\n");
         int limit = Math.min(clans.size(), SeasonConfig.getRewardsQuantity(UserParameter.CLAN));
 
         for (int i = 0; i < limit; i++) {
             Clan clan = clans.get(i);
+            for (User user : clan.getAllUsers()) {
+                applyCommands(UserParameter.CLAN, i + 1, user.getName());
+            }
+            
             builder.append(
               SeasonConfig.getDiscordElement(UserParameter.CLAN)
                 .replace("<place>", String.valueOf(i + 1))
@@ -138,17 +138,25 @@ public class SeasonDataCleaner {
             if (i + 1 != limit) {
                 builder.append("\n");
             }
-
-            for (User user : clan.getAllUsers()) {
-                SeasonConfig.getRewardsCommands(UserParameter.CLAN, i + 1)
-                  .forEach(command -> {
-                      command = command.replace("<player>", user.getName());
-                      Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-                  });
-            }
         }
 
         DiscordBot.getService().sendMessage(DiscordChannel.RADIO, builder.toString().replaceAll("&.|§.", ""));
+    }
+
+    private void applyCommands(UserParameter parameter, int place, String user) {
+        SeasonConfig.getRewardsCommands(parameter, place)
+          .forEach(command -> {
+              if (command.startsWith("exp ")) {
+                  int value = Integer.parseInt(command.substring(4));
+                  plugin.getDatabase()
+                    .updateIncrementUser(user, UserParameter.EXP, value)
+                    .join();
+                  logger.info(String.format("Given %s XP to player %s", value, user));
+              } else {
+                  command = command.replace("<player>", user);
+                  Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+              }
+          });
     }
 
     private void runCleanProcess() {
