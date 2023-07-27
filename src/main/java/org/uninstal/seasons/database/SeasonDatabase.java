@@ -6,6 +6,7 @@ import org.uninstal.seasons.data.SeasonUser;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -104,22 +105,43 @@ public class SeasonDatabase {
         Validate.notNull(user, "User cannot be null");
         String command = "INSERT INTO apocalypseseasons (user_name, exp, mob_kills, player_kills, play_time) " +
           "VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE exp=?, mob_kills=?, player_kills=?, play_time=?";
-        SQLFunction<SeasonUser> function = statement -> {
-            statement.setString(1, user.getUserName());
-            statement.setInt(2, user.getExp());
-            statement.setInt(3, user.getMobKills());
-            statement.setInt(4, user.getPlayerKills());
-            statement.setLong(5, user.getPlayTime());
-            statement.setInt(6, user.getExp());
-            statement.setInt(7, user.getMobKills());
-            statement.setInt(8, user.getPlayerKills());
-            statement.setLong(9, user.getPlayTime());
+        SQLFunction<Void> function = statement -> {
+            insertUserInStatement(user, statement);
             statement.executeUpdate();
-            return user;
+            return null;
         };
 
         if (async) executeAsync(command, function);
         else execute(command, function);
+    }
+
+    public CompletableFuture<Void> saveUsers(Collection<SeasonUser> users, boolean async) {
+        Validate.notNull(user, "User cannot be null");
+        String command = "INSERT INTO apocalypseseasons (user_name, exp, mob_kills, player_kills, play_time) " +
+          "VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE exp=?, mob_kills=?, player_kills=?, play_time=?";
+        SQLFunction<Void> function = statement -> {
+            for (SeasonUser user : users) {
+                insertUserInStatement(user, statement);
+                statement.addBatch();
+            }
+            statement.executeBatch();
+            return null;
+        };
+
+        return async ? executeAsync(command, function)
+          : CompletableFuture.completedFuture(execute(command, function));
+    }
+
+    private static void insertUserInStatement(SeasonUser user, PreparedStatement statement) throws SQLException {
+        statement.setString(1, user.getUserName());
+        statement.setInt(2, user.getExp());
+        statement.setInt(3, user.getMobKills());
+        statement.setInt(4, user.getPlayerKills());
+        statement.setLong(5, user.getPlayTime());
+        statement.setInt(6, user.getExp());
+        statement.setInt(7, user.getMobKills());
+        statement.setInt(8, user.getPlayerKills());
+        statement.setLong(9, user.getPlayTime());
     }
 
     public CompletableFuture<BestPlayersList> getBestPlayers(UserParameter parameter, int quantity) {

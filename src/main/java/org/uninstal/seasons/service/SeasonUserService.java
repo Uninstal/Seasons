@@ -3,10 +3,7 @@ package org.uninstal.seasons.service;
 import org.uninstal.seasons.Seasons;
 import org.uninstal.seasons.data.SeasonUser;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class SeasonUserService {
 
@@ -41,7 +38,7 @@ public class SeasonUserService {
     }
 
     public Collection<SeasonUser> getList() {
-        return cached.values();
+        return new ArrayList<>(cached.values());
     }
     
     public void close() {
