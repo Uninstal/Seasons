@@ -46,7 +46,7 @@ public class SeasonUserService {
     
     public void close() {
         for (SeasonUser user : cached.values()) {
-            plugin.getDatabase().saveUser(cached.remove(user.getUserName()), false);
+            plugin.getDatabase().saveUser(user, false);
         }
     }
 }
