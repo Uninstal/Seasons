@@ -84,8 +84,9 @@ public class Placeholder extends PlaceholderExpansion {
     }
 
     private String processUser(String userName, Function<SeasonUser, Object> function, String defaultValue) {
-        return (String) plugin.getServices().getUserService()
-          .get(userName).map(function)
+        return plugin.getServices().getUserService()
+          .get(userName)
+          .map(seasonUser -> function.apply(seasonUser).toString())
           .orElse(defaultValue);
     }
 
