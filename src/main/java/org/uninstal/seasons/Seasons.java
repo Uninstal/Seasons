@@ -150,7 +150,7 @@ public class Seasons extends JavaPlugin {
     private void sendHelpMessage(CommandSender sender) {
         sender.sendMessage("§7[§6Сезоны§7] /season add exp|mobs|players <ник> <значение>");
         sender.sendMessage("§7[§6Сезоны§7] /season add chest");
-        sender.sendMessage("§7[§6Сезоны§7] /season set exp|mobs|players <ник> <значение>");
+        sender.sendMessage("§7[§6Сезоны§7] /season set exp|mobs|players|playtime <ник> <значение>");
         sender.sendMessage("§7[§6Сезоны§7] /season check <ник>");
         sender.sendMessage("§7[§6Сезоны§7] /season update");
         sender.sendMessage("§7[§6Сезоны§7] /season ranks");

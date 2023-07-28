@@ -10,7 +10,7 @@ public class SeasonUser {
 
     private final SeasonServices service;
     private final String userName;
-    private final long join = System.currentTimeMillis();
+    private long join = System.currentTimeMillis();
 
     private SeasonRank rank;
     private int exp;
@@ -91,6 +91,11 @@ public class SeasonUser {
     public void setPlayTime(long playTime) {
         this.playTime = playTime;
     }
+
+    public void setPlayTimeReal(long playTime) {
+        this.playTime = playTime;
+        this.join = System.currentTimeMillis();
+    }
     
     public void addPlayTime(long playTime) {
         this.playTime += playTime;
@@ -102,6 +107,11 @@ public class SeasonUser {
 
     public Player getPlayer() {
         return Bukkit.getPlayer(userName);
+    }
+    
+    public boolean isOnline() {
+        Player player = getPlayer();
+        return player != null && player.isOnline();
     }
 
     public int getExp() {

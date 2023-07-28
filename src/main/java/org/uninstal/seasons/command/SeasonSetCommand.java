@@ -27,6 +27,9 @@ public class SeasonSetCommand extends SeasonCommand {
         } else if (args[1].equalsIgnoreCase("players")) {
             setParameter(sender, userName, Integer.parseInt(args[3]),
               SeasonUser::setPlayerKills, UserParameter.PLAYER_KILLS);
+        } else if (args[1].equalsIgnoreCase("playtime")) {
+            setParameter(sender, userName, Long.parseLong(args[3]),
+              SeasonUser::setPlayTimeReal, UserParameter.PLAY_TIME);
         }
     }
 

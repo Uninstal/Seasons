@@ -9,7 +9,6 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.uninstal.seasons.data.SeasonUser;
-import org.uninstal.seasons.service.SeasonUserService;
 
 import java.util.Optional;
 
@@ -54,11 +53,7 @@ public class SeasonHandler implements Listener {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
-        SeasonUserService service = plugin.getServices().getUserService();
-        String userName = e.getPlayer().getName();
-        
-        service.get(userName).ifPresent(user -> 
-          user.addPlayTime(System.currentTimeMillis() - user.getJoin()));
-        service.unload(userName);
+        plugin.getServices().getUserService()
+          .unload(e.getPlayer().getName());
     }
 }

@@ -137,11 +137,11 @@ public class SeasonDatabase {
         statement.setInt(2, user.getExp());
         statement.setInt(3, user.getMobKills());
         statement.setInt(4, user.getPlayerKills());
-        statement.setLong(5, user.getPlayTime());
+        statement.setLong(5, user.isOnline() ? user.getPlayTimeReal() : user.getPlayTime());
         statement.setInt(6, user.getExp());
         statement.setInt(7, user.getMobKills());
         statement.setInt(8, user.getPlayerKills());
-        statement.setLong(9, user.getPlayTime());
+        statement.setLong(9, user.isOnline() ? user.getPlayTimeReal() : user.getPlayTime());
     }
 
     public CompletableFuture<BestPlayersList> getBestPlayers(UserParameter parameter, int quantity) {

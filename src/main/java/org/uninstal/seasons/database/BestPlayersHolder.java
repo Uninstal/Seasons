@@ -6,7 +6,6 @@ import org.uninstal.seasons.data.SeasonUser;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 // Класс для кэширования лучших игроков
 public class BestPlayersHolder {
@@ -40,10 +39,7 @@ public class BestPlayersHolder {
 
     public void update() {
         // Сохраняем в бд текущих игроков на сервере, чтобы обновить данные
-        Collection<SeasonUser> list = plugin.getServices()
-          .getUserService().getList().stream()
-          .peek(user -> user.setPlayTime(user.getPlayTimeReal()))
-          .collect(Collectors.toList());
+        Collection<SeasonUser> list = plugin.getServices().getUserService().getList();
         CompletableFuture<Void> future = plugin.getDatabase().saveUsers(list, true);
         
         // Выполняем обновление данных на сервере при завершении сохранения
