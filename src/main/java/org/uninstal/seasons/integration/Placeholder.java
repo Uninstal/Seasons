@@ -46,7 +46,7 @@ public class Placeholder extends PlaceholderExpansion {
             String userName = p.getName();
 
             if (params.endsWith("rank")) {
-                return processUser(userName, user -> user.getRank().getDisplay() + " ", "");
+                return processUser(userName, user -> (user.getRank().getDisplay() + " ").trim(), "");
             }
             if (params.endsWith("exp")) {
                 return processUser(userName, SeasonUser::getExp, "0");
