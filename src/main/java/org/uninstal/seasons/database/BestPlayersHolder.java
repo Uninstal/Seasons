@@ -18,6 +18,7 @@ public class BestPlayersHolder {
     private final static long RATE = SeasonConfig.getRatingUpdateRate() * 1000L;
     private final static int CACHE_SIZE = SeasonConfig.getRatingQuantity();
 
+    private long updated = System.currentTimeMillis();
     private final Map<UserParameter, BestPlayersList> cached = new HashMap<>();
     private final Seasons plugin;
 
@@ -60,7 +61,8 @@ public class BestPlayersHolder {
     public synchronized SeasonUser get(UserParameter parameter, int place) {
         BestPlayersList list = cached.get(parameter);
 
-        if (System.currentTimeMillis() - list.getCreated() > RATE) {
+        if (System.currentTimeMillis() - updated > RATE) {
+            updated = System.currentTimeMillis();
             update();
         }
 
