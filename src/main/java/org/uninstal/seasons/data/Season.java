@@ -1,6 +1,7 @@
 package org.uninstal.seasons.data;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.uninstal.seasons.SeasonConfig;
 import org.uninstal.seasons.Seasons;
 
 import java.io.File;
@@ -40,7 +41,7 @@ public class Season {
             }
         }
         this.end = (Calendar) start.clone();
-        this.end.add(Calendar.DATE, 90);
+        this.end.add(Calendar.DATE, SeasonConfig.getSeasonDuration());
     }
     
     public void save() throws IOException {

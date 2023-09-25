@@ -56,6 +56,10 @@ public class SeasonConfig {
     public static int getRatingQuantity() {
         return config.getInt("rating-cache.quantity");
     }
+    
+    public static int getSeasonDuration() {
+        return config.getInt("season-duration", 90);
+    }
 
     public static FileConfiguration getConfig() {
         return config;

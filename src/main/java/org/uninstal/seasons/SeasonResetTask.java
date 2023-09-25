@@ -3,8 +3,6 @@ package org.uninstal.seasons;
 import org.bukkit.Bukkit;
 import org.uninstal.seasons.data.Season;
 
-import java.util.Calendar;
-
 public class SeasonResetTask extends Thread {
 
     private final Seasons plugin;
@@ -16,7 +14,7 @@ public class SeasonResetTask extends Thread {
         this.season = season;
         this.next = season.getEnd().getTimeInMillis();
         this.plugin.getLogger().info(String.format("Next cleaner start after %s days",
-          season.getEnd().get(Calendar.DAY_OF_YEAR) - Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+          (season.getEnd().getTimeInMillis() - System.currentTimeMillis()) / 86400000
         ));
     }
 
